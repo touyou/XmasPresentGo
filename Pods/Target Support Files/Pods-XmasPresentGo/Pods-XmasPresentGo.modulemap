@@ -1,0 +1,6 @@
+framework module Pods_XmasPresentGo {
+  umbrella header "Pods-XmasPresentGo-umbrella.h"
+
+  export *
+  module * { export * }
+}
