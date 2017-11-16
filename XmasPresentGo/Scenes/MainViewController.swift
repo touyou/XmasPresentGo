@@ -10,7 +10,7 @@ import UIKit
 import SceneKit
 import ARKit
 
-class ViewController: UIViewController, ARSCNViewDelegate {
+class MainViewController: UIViewController {
 
     @IBOutlet var sceneView: ARSCNView!
     
@@ -51,17 +51,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
     }
+}
 
-    // MARK: - ARSCNViewDelegate
+// MARK: - ARSCNViewDelegate
+
+extension MainViewController: ARSCNViewDelegate {
     
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
+    /*
+     // Override to create and configure nodes for anchors added to the view's session.
+     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+     let node = SCNNode()
      
-        return node
-    }
-*/
+     return node
+     }
+     */
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
@@ -78,3 +81,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
 }
+
+// MARK: - Storyboard Instatiable
+
+extension MainViewController: StoryboardInstantiable {}
