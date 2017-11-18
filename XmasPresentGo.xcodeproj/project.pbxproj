@@ -7,10 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		460174491FBF2FBA00AEE0C0 /* ARManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460174481FBF2FBA00AEE0C0 /* ARManager.swift */; };
+		460174491FBF2FBA00AEE0C0 /* ARHelperKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460174481FBF2FBA00AEE0C0 /* ARHelperKit.swift */; };
 		460174521FBFC87200AEE0C0 /* materials.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 460174501FBFC87100AEE0C0 /* materials.mtl */; };
 		460174581FBFC8D500AEE0C0 /* materials.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 460174551FBFC8D200AEE0C0 /* materials.mtl */; };
 		4601745A1FBFC8D500AEE0C0 /* texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 460174571FBFC8D500AEE0C0 /* texture.jpg */; };
+		4601745D1FBFC98600AEE0C0 /* teddy_bear.scn in Resources */ = {isa = PBXBuildFile; fileRef = 4601745C1FBFC90600AEE0C0 /* teddy_bear.scn */; };
+		4601745E1FBFC98600AEE0C0 /* gundam.scn in Resources */ = {isa = PBXBuildFile; fileRef = 460174541FBFC8A200AEE0C0 /* gundam.scn */; };
+		460174611FBFD19A00AEE0C0 /* ARManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460174601FBFD19A00AEE0C0 /* ARManager+Extensions.swift */; };
 		4687D4D71FBC3651000192BB /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4687D4D61FBC3651000192BB /* StoryboardInstantiable.swift */; };
 		4687D4D91FBC394D000192BB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4687D4D81FBC394D000192BB /* Default-568h@2x.png */; };
 		468E23421FBBDA6D00675696 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468E23411FBBDA6D00675696 /* AppDelegate.swift */; };
@@ -25,12 +28,13 @@
 
 /* Begin PBXFileReference section */
 		148E5CC60D356CA3D2FE3AF4 /* Pods-XmasPresentGo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XmasPresentGo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XmasPresentGo/Pods-XmasPresentGo.debug.xcconfig"; sourceTree = "<group>"; };
-		460174481FBF2FBA00AEE0C0 /* ARManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARManager.swift; sourceTree = "<group>"; };
+		460174481FBF2FBA00AEE0C0 /* ARHelperKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARHelperKit.swift; sourceTree = "<group>"; };
 		460174501FBFC87100AEE0C0 /* materials.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = materials.mtl; sourceTree = "<group>"; };
 		460174541FBFC8A200AEE0C0 /* gundam.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = gundam.scn; sourceTree = "<group>"; };
 		460174551FBFC8D200AEE0C0 /* materials.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = materials.mtl; sourceTree = "<group>"; };
 		460174571FBFC8D500AEE0C0 /* texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = texture.jpg; sourceTree = "<group>"; };
 		4601745C1FBFC90600AEE0C0 /* teddy_bear.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = teddy_bear.scn; sourceTree = "<group>"; };
+		460174601FBFD19A00AEE0C0 /* ARManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARManager+Extensions.swift"; sourceTree = "<group>"; };
 		4662D04DF201AA049EA9E408 /* Pods_XmasPresentGo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XmasPresentGo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4687D4D61FBC3651000192BB /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		4687D4D81FBC394D000192BB /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -78,7 +82,7 @@
 		460174471FBF2F9A00AEE0C0 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				460174481FBF2FBA00AEE0C0 /* ARManager.swift */,
+				460174481FBF2FBA00AEE0C0 /* ARHelperKit.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -100,6 +104,14 @@
 				460174571FBFC8D500AEE0C0 /* texture.jpg */,
 			);
 			path = teddy_bear;
+			sourceTree = "<group>";
+		};
+		4601745F1FBFD17A00AEE0C0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				460174601FBFD19A00AEE0C0 /* ARManager+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		4687D4D41FBC3611000192BB /* Scenes */ = {
@@ -145,6 +157,7 @@
 				468E23581FBBDD4600675696 /* Assets */,
 				468E23571FBBDD3300675696 /* Settings */,
 				4687D4D41FBC3611000192BB /* Scenes */,
+				4601745F1FBFD17A00AEE0C0 /* Extensions */,
 				460174471FBF2F9A00AEE0C0 /* Helper */,
 				4687D4D51FBC362A000192BB /* Protocols */,
 			);
@@ -234,6 +247,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4601745D1FBFC98600AEE0C0 /* teddy_bear.scn in Resources */,
+				4601745E1FBFC98600AEE0C0 /* gundam.scn in Resources */,
 				468E23441FBBDA6D00675696 /* art.scnassets in Resources */,
 				468E234E1FBBDA6D00675696 /* LaunchScreen.storyboard in Resources */,
 				460174581FBFC8D500AEE0C0 /* materials.mtl in Resources */,
@@ -311,7 +326,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				460174491FBF2FBA00AEE0C0 /* ARManager.swift in Sources */,
+				460174611FBFD19A00AEE0C0 /* ARManager+Extensions.swift in Sources */,
+				460174491FBF2FBA00AEE0C0 /* ARHelperKit.swift in Sources */,
 				468E23461FBBDA6D00675696 /* MainViewController.swift in Sources */,
 				4687D4D71FBC3651000192BB /* StoryboardInstantiable.swift in Sources */,
 				468E23421FBBDA6D00675696 /* AppDelegate.swift in Sources */,
