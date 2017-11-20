@@ -14,7 +14,6 @@
 		4601745D1FBFC98600AEE0C0 /* teddy_bear.scn in Resources */ = {isa = PBXBuildFile; fileRef = 4601745C1FBFC90600AEE0C0 /* teddy_bear.scn */; };
 		4601745E1FBFC98600AEE0C0 /* gundam.scn in Resources */ = {isa = PBXBuildFile; fileRef = 460174541FBFC8A200AEE0C0 /* gundam.scn */; };
 		460174611FBFD19A00AEE0C0 /* ARManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460174601FBFD19A00AEE0C0 /* ARManager+Extensions.swift */; };
-		460174631FC05B2B00AEE0C0 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460174621FC05B2B00AEE0C0 /* Double+Extensions.swift */; };
 		460174651FC0676E00AEE0C0 /* CLLocationCoordinate2D+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460174641FC0676E00AEE0C0 /* CLLocationCoordinate2D+Extensions.swift */; };
 		4687D4D71FBC3651000192BB /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4687D4D61FBC3651000192BB /* StoryboardInstantiable.swift */; };
 		4687D4D91FBC394D000192BB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4687D4D81FBC394D000192BB /* Default-568h@2x.png */; };
@@ -37,7 +36,6 @@
 		460174571FBFC8D500AEE0C0 /* texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = texture.jpg; sourceTree = "<group>"; };
 		4601745C1FBFC90600AEE0C0 /* teddy_bear.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = teddy_bear.scn; sourceTree = "<group>"; };
 		460174601FBFD19A00AEE0C0 /* ARManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARManager+Extensions.swift"; sourceTree = "<group>"; };
-		460174621FC05B2B00AEE0C0 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		460174641FC0676E00AEE0C0 /* CLLocationCoordinate2D+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extensions.swift"; sourceTree = "<group>"; };
 		4662D04DF201AA049EA9E408 /* Pods_XmasPresentGo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XmasPresentGo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4687D4D61FBC3651000192BB /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
@@ -114,7 +112,6 @@
 			isa = PBXGroup;
 			children = (
 				460174601FBFD19A00AEE0C0 /* ARManager+Extensions.swift */,
-				460174621FC05B2B00AEE0C0 /* Double+Extensions.swift */,
 				460174641FC0676E00AEE0C0 /* CLLocationCoordinate2D+Extensions.swift */,
 			);
 			path = Extensions;
@@ -333,7 +330,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				460174651FC0676E00AEE0C0 /* CLLocationCoordinate2D+Extensions.swift in Sources */,
-				460174631FC05B2B00AEE0C0 /* Double+Extensions.swift in Sources */,
 				460174611FBFD19A00AEE0C0 /* ARManager+Extensions.swift in Sources */,
 				460174491FBF2FBA00AEE0C0 /* ARHelperKit.swift in Sources */,
 				468E23461FBBDA6D00675696 /* MainViewController.swift in Sources */,
