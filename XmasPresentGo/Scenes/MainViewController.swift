@@ -29,7 +29,7 @@ class MainViewController: UIViewController {
         // Set the scene to the view
         sceneView.scene = scene
         
-        let sample = ARManager.shared.generateModel(.present)
+        let sample = ARManager.shared.generateModel(.skateboard)
         sample.position = SCNVector3(0, 0, -1)
         sceneView.scene.rootNode.addChildNode(sample)
     }

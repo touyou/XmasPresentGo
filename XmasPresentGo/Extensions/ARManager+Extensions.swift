@@ -71,6 +71,23 @@ extension ARManager: SCNModelGeneratable {
         
         // TODO: if we need changing scale, we change it here
         
+        switch model {
+            
+        case .teddyBear:
+            node.scale = SCNVector3Make(0.002, 0.002, 0.002)
+        case .gundam:
+            // Cannot change the scale
+            node.transform = SCNMatrix4MakeRotation(Float.pi, 0, 1, 0)
+        case .nintendoDS:
+            node.scale = SCNVector3Make(0.002, 0.002, 0.002)
+        case .present:
+            node.scale = SCNVector3Make(0.1, 0.1, 0.1)
+        case .ship:
+            break
+        case .skateboard:
+            node.scale = SCNVector3Make(0.002, 0.002, 0.002)
+        }
+        
         return node
     }
 }

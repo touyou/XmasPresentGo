@@ -35,17 +35,38 @@ public class ARManager: NSObject {
 /// CoreLocation Manager
 ///
 /// Get longitude attitude altitude
-public class ARCLManager {
+public class ARCLManager: NSObject {
     
     static let shared = ARCLManager()
     
+    weak var delegate: LocationServiceDelegate?
+    
+    override init() {
+        super.init()
+        
+        locationManager = CLLocationManager()
+        
+        guard let locationManager = locationManager else {
+            
+            return
+        }
+        
+        requestAuthorization(locationManager: locationManager)
+        
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        locationManager.distanceFilter = kCLDistanceFilterNone
+        locationManager.headingFilter = kCLHeadingFilterNone
+        locationManager.pausesLocationUpdatesAutomatically = false
+        locationManager.delegate = self
+    }
+    
     // MARK: - Private
     
-    private let locationManager: CLLocationManager
-    private var _latitude: CLLocationDistance?
-    private var _longitude: CLLocationDistance?
-    private var _altitude: CLLocationDistance?
-    private var _coordinate: CLLocationCoordinate2D?
+    private var locationManager: CLLocationManager?
+    private var _latitude: CLLocationDistance? = nil
+    private var _longitude: CLLocationDistance? = nil
+    private var _altitude: CLLocationDistance? = nil
+    private var _coordinate: CLLocationCoordinate2D? = nil
     
     // MARK: - Internal
     
@@ -62,7 +83,7 @@ public class ARCLManager {
     /// Longitude (default is 0.0)
     var longitude: CLLocationDistance {
         
-        guard let longitude = self.longitude else {
+        guard let longitude = self._longitude else {
             
             return 0.0
         }
@@ -89,25 +110,32 @@ public class ARCLManager {
         
         return altitude
     }
+    var userHeading: CLLocationDirection!
     
-    /// start up location manager
-    func enabledCLManager() {
+    /// request authorize corelocation
+    func requestAuthorization(locationManager: CLLocationManager) {
         
-        if CLLocationManager.locationServicesEnabled() {
-            
-            locationManager = CLLocationManager()
-            locationManager.delegate = self
-            locationManager.startUpdatingLocation()
+        locationManager.requestWhenInUseAuthorization()
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedAlways, .authorizedWhenInUse:
+            startUpdatingLocation(locationManager: locationManager)
+        case .notDetermined, .restricted, .denied:
+            stopUpdatingLocation(locationManager: locationManager)
         }
     }
     
-    /// end location manager
-    func disableCLManager() {
+    /// start up location manager
+    func startUpdatingLocation(locationManager: CLLocationManager) {
         
-        if CLLocationManager.locationServicesEnabled() {
-            
-            locationManager.stopUpdatingLocation()
-        }
+        locationManager.startUpdatingLocation()
+        locationManager.startUpdatingHeading()
+    }
+    
+    /// end location manager
+    func stopUpdatingLocation(locationManager: CLLocationManager) {
+        
+        locationManager.stopUpdatingLocation()
+        locationManager.stopUpdatingHeading()
     }
 }
 
@@ -115,31 +143,42 @@ extension ARCLManager: CLLocationManagerDelegate {
     
     // MARK: - CLLocationManager delegate
     
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        
-        switch status {
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .restricted, .denied:
-            break
-        case .authorizedAlways, .authorizedWhenInUse:
-            break
-        }
-    }
-    
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        guard let newLocation = locations.last,
-            CLLocationCoordinate2DIsValid(newLocation.coordinate) else {
-                
-                return
+        for location in locations {
+            
+            self.delegate?.trackingLocation(for: location)
         }
         
-        _altitude = newLocation.altitude
-        _coordinate = newLocation.coordinate
-        _longitude = newLocation.coordinate.longitude
-        _latitude = newLocation.coordinate.latitude
+        let newLocation = manager.location
+        _altitude = newLocation?.altitude
+        _coordinate = newLocation?.coordinate
+        _longitude = newLocation?.coordinate.longitude
+        _latitude = newLocation?.coordinate.latitude
     }
+    
+    public func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        
+        if newHeading.headingAccuracy < 0 {
+            
+            return
+        }
+        
+        let heading = newHeading.trueHeading > 0 ? newHeading.trueHeading : newHeading.magneticHeading
+        userHeading = heading
+    }
+    
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        
+        self.delegate?.trackingLocationDidFail(with: error)
+    }
+}
+
+/// Location Service Delegate
+protocol LocationServiceDelegate: class {
+    
+    func trackingLocation(for currentLocation: CLLocation)
+    func trackingLocationDidFail(with error: Error)
 }
 
 // MARK: - Matrix Helper
@@ -178,6 +217,21 @@ class MatrixHelper {
         let rotationMatrix = MatrixHelper.rotateAroundY(with: matrix_identity_float4x4, for: bearing)
         let transformMatrix = simd_mul(rotationMatrix, translationMatrix)
         return simd_mul(matrix, transformMatrix)
+    }
+    
+    /// This method calcurate ar location to real world location
+    static func transformLocation(for matrix: simd_float4x4, originLocation: CLLocation, location: SCNVector3) -> CLLocation {
+        
+        let x2 = pow(location.x, 2.0)
+        let y2 = pow(location.y, 2.0)
+        let z2 = pow(location.z, 2.0)
+        // Bearing and distance in AR World
+        let bearing = atan2(location.z, sqrt(x2 + y2))
+        let distance = sqrt(x2+y2+z2)
+        
+        
+        
+        return CLLocation()
     }
 }
 
