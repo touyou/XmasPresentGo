@@ -24,7 +24,7 @@
 		468E234B1FBBDA6D00675696 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 468E234A1FBBDA6D00675696 /* Assets.xcassets */; };
 		468E234E1FBBDA6D00675696 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 468E234C1FBBDA6D00675696 /* LaunchScreen.storyboard */; };
 		468E23561FBBDD2C00675696 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 468E23551FBBDD2C00675696 /* GoogleService-Info.plist */; };
-		46B88BE71FC6C053006AD58C /* VincentryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B88BE61FC6C053006AD58C /* VincentryHelper.swift */; };
+		46B88BE71FC6C053006AD58C /* VincentyHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B88BE61FC6C053006AD58C /* VincentyHelper.swift */; };
 		E64A915B508A40C55D44F784 /* Pods_XmasPresentGo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4662D04DF201AA049EA9E408 /* Pods_XmasPresentGo.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,7 +50,7 @@
 		468E234D1FBBDA6D00675696 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		468E234F1FBBDA6D00675696 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		468E23551FBBDD2C00675696 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		46B88BE61FC6C053006AD58C /* VincentryHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VincentryHelper.swift; sourceTree = "<group>"; };
+		46B88BE61FC6C053006AD58C /* VincentyHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VincentyHelper.swift; sourceTree = "<group>"; };
 		57B6345B1E59F9E03058D181 /* Pods-XmasPresentGo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XmasPresentGo.release.xcconfig"; path = "Pods/Target Support Files/Pods-XmasPresentGo/Pods-XmasPresentGo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,7 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				460174481FBF2FBA00AEE0C0 /* ARHelperKit.swift */,
-				46B88BE61FC6C053006AD58C /* VincentryHelper.swift */,
+				46B88BE61FC6C053006AD58C /* VincentyHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -277,13 +277,27 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-XmasPresentGo/Pods-XmasPresentGo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -338,7 +352,7 @@
 				468E23461FBBDA6D00675696 /* MainViewController.swift in Sources */,
 				4687D4D71FBC3651000192BB /* StoryboardInstantiable.swift in Sources */,
 				468E23421FBBDA6D00675696 /* AppDelegate.swift in Sources */,
-				46B88BE71FC6C053006AD58C /* VincentryHelper.swift in Sources */,
+				46B88BE71FC6C053006AD58C /* VincentyHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
