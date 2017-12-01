@@ -69,8 +69,6 @@ extension ARManager: SCNModelGeneratable {
             assert(false, "指定されたモデルが見つかりません。")
         }
         
-        // TODO: if we need changing scale, we change it here
-        
         switch model {
             
         case .teddyBear:

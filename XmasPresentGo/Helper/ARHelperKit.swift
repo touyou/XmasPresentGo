@@ -41,7 +41,7 @@ public class ARCLManager: NSObject {
     
     weak var delegate: LocationServiceDelegate?
     
-    override init() {
+    private override init() {
         super.init()
         
         locationManager = CLLocationManager()
@@ -58,6 +58,19 @@ public class ARCLManager: NSObject {
         locationManager.headingFilter = kCLHeadingFilterNone
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.delegate = self
+        
+        startUpdatingLocation(locationManager: locationManager)
+        print("start location")
+    }
+    
+    deinit {
+        
+        guard let locationManager = locationManager else {
+            
+            return
+        }
+        
+        stopUpdatingLocation(locationManager: locationManager)
     }
     
     // MARK: - Private
@@ -67,6 +80,7 @@ public class ARCLManager: NSObject {
     private var _longitude: CLLocationDistance? = nil
     private var _altitude: CLLocationDistance? = nil
     private var _coordinate: CLLocationCoordinate2D? = nil
+    private var _location: CLLocation? = nil
     
     // MARK: - Internal
     
@@ -95,7 +109,7 @@ public class ARCLManager: NSObject {
         
         guard let coordinate = self._coordinate else {
             
-            return CLLocationCoordinate2D(latitude: self.longitude, longitude: self.latitude)
+            return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
         }
         
         return coordinate
@@ -109,6 +123,15 @@ public class ARCLManager: NSObject {
         }
         
         return altitude
+    }
+    var location: CLLocation {
+        
+        guard let location = self._location else {
+            
+            return CLLocation(latitude: self.latitude, longitude: self.longitude)
+        }
+        
+        return location
     }
     var userHeading: CLLocationDirection!
     
@@ -137,6 +160,9 @@ public class ARCLManager: NSObject {
         locationManager.stopUpdatingLocation()
         locationManager.stopUpdatingHeading()
     }
+    
+    /// for init shared instance
+    func run() {}
 }
 
 extension ARCLManager: CLLocationManagerDelegate {
@@ -155,6 +181,7 @@ extension ARCLManager: CLLocationManagerDelegate {
         _coordinate = newLocation?.coordinate
         _longitude = newLocation?.coordinate.longitude
         _latitude = newLocation?.coordinate.latitude
+        _location = newLocation
     }
     
     public func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
@@ -199,6 +226,18 @@ class MatrixHelper {
         matrix.columns.2.z = cos(degrees)
         return matrix.inverse
     }
+
+    static func rotateAroundX(with matrix: matrix_float4x4, for degrees: Float) -> matrix_float4x4 {
+        
+        var matrix: matrix_float4x4 = matrix
+        
+        matrix.columns.1.y = cos(degrees)
+        matrix.columns.1.z = -sin(degrees)
+        
+        matrix.columns.2.y = sin(degrees)
+        matrix.columns.2.z = cos(degrees)
+        return matrix.inverse
+    }
     
     static func translationMatrix(with matrix: matrix_float4x4, for translation: vector_float4) -> matrix_float4x4 {
         
@@ -206,16 +245,16 @@ class MatrixHelper {
         matrix.columns.3 = translation
         return matrix
     }
-    
+
     /// This method calcurate distance and bearing between one and the other location
     static func transformMatrix(for matrix: simd_float4x4, originLocation: CLLocation, location: CLLocation) -> simd_float4x4 {
         
-        let distance = Float(location.distance(from: originLocation))
-        let bearing = GLKMathDegreesToRadians(Float(originLocation.coordinate.direction(to: location.coordinate)))
-        let position = vector_float4(0.0, 0.0, -distance, 0.0)
+        let (s: distance, a1: bearing, a2: a2) = VincentyHelper.shared.calcurateDistanceAndAzimuths(at: originLocation.coordinate, and: location.coordinate)
+        let position = vector_float4(0.0, 0.0, Float(-distance), 0.0)
         let translationMatrix = MatrixHelper.translationMatrix(with: matrix_identity_float4x4, for: position)
-        let rotationMatrix = MatrixHelper.rotateAroundY(with: matrix_identity_float4x4, for: bearing)
-        let transformMatrix = simd_mul(rotationMatrix, translationMatrix)
+        let rotationMatrix = MatrixHelper.rotateAroundY(with: matrix_identity_float4x4, for: Float(bearing.radian))
+        let rotationMatrix2 = MatrixHelper.rotateAroundX(with: matrix_identity_float4x4, for: Float(a2.radian))
+        let transformMatrix = simd_mul(simd_mul(rotationMatrix, translationMatrix), rotationMatrix2)
         return simd_mul(matrix, transformMatrix)
     }
     
@@ -226,12 +265,12 @@ class MatrixHelper {
         let y2 = pow(location.y, 2.0)
         let z2 = pow(location.z, 2.0)
         // Bearing and distance in AR World
-        let bearing = atan2(location.z, sqrt(x2 + y2))
-        let distance = sqrt(x2+y2+z2)
+        let distance = sqrt(x2 + y2 + z2)
+        let a1 = atan2(Double(location.x), Double(location.z)).degree
         
+        let (location: location, a2: _) = VincentyHelper.shared.calcurateNextPointLocation(from: originLocation.coordinate, s: Double(distance), a1: a1)
         
-        
-        return CLLocation()
+        return CLLocation(latitude: location.latitude, longitude: location.longitude)
     }
 }
 
