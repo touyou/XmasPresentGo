@@ -10,10 +10,28 @@ import UIKit
 import SceneKit
 import ARKit
 import CoreLocation
+import Firebase
 
 class MainViewController: UIViewController {
 
-    @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet weak var sceneView: ARSCNView!
+    @IBOutlet weak var collectionView: UICollectionView! {
+        
+        didSet {
+            
+            collectionView.dataSource = self
+            collectionView.delegate = self
+            collectionView.allowsSelection = true
+            collectionView.allowsMultipleSelection = false
+            collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .left)
+            
+            collectionView.register(ModelCollectionViewCell.self)
+        }
+    }
+    @IBOutlet weak var modeLabel: UILabel!
+    
+    var selectID = 0
+    let modelIDs: [ARManager.Model] = [.present, .teddyBear, .gundam, .nintendoDS, .ship, .skateboard]
     
     override func viewDidLoad() {
         
@@ -69,13 +87,17 @@ class MainViewController: UIViewController {
                 return
             }
             
-            let hitTransform = SCNMatrix4(firstHit.worldTransform)
-            let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
-            let newNode = ARManager.shared.generateModel(.present)
-            newNode.position = hitPosition
-            sceneView.scene.rootNode.addChildNode(newNode)
-            print(MatrixHelper.transformLocation(for: matrix_identity_float4x4, originLocation: ARCLManager.shared.location, location: hitPosition).coordinate)
-            print(ARCLManager.shared.location.altitude + Double(hitPosition.z))
+            if selectID != 0 {
+                
+                let hitTransform = SCNMatrix4(firstHit.worldTransform)
+                let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
+                let newNode = ARManager.shared.generateModel(modelIDs[selectID])
+                newNode.position = hitPosition
+                sceneView.scene.rootNode.addChildNode(newNode)
+            } else {
+                
+                
+            }
         }
     }
 }
@@ -106,6 +128,65 @@ extension MainViewController: ARSCNViewDelegate {
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
         
+    }
+}
+
+// MARK: - UICollectionView
+
+extension MainViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        selectID = indexPath.row
+        modeLabel.text = selectID == 0 ? "get" : modelIDs[selectID].modelName
+    }
+}
+
+extension MainViewController: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return modelIDs.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell: ModelCollectionViewCell = collectionView.dequeueReusableCell(forIndexPath: indexPath)
+        
+        cell.modelView.scene = SCNScene()
+        cell.modelView.scene?.rootNode.addChildNode(ARManager.shared.generateModel(modelIDs[indexPath.row]))
+        
+        return cell
+    }
+}
+
+extension MainViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let cellWidth = floor(collectionView.bounds.height)
+        
+        return CGSize(width: cellWidth, height: cellWidth)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        
+        return 1.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        
+        return 1.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        return UIEdgeInsets.zero
     }
 }
 

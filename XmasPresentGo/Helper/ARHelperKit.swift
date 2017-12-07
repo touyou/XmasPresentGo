@@ -19,7 +19,7 @@ import GLKit.GLKMatrix4
 protocol SCNModelGeneratable {
     
     associatedtype ModelEnumType
-    func generateModel(_ model: ModelEnumType) -> SCNNode
+    func generateModel(_ model: ModelEnumType) -> ARNode
 }
 
 /// ARKit Manager
@@ -257,7 +257,7 @@ class MatrixHelper {
         let transformMatrix = simd_mul(simd_mul(rotationMatrix, translationMatrix), rotationMatrix2)
         return simd_mul(matrix, transformMatrix)
     }
-    
+
     /// This method calcurate ar location to real world location
     static func transformLocation(for matrix: simd_float4x4, originLocation: CLLocation, location: SCNVector3) -> CLLocation {
         
@@ -272,6 +272,11 @@ class MatrixHelper {
         
         return CLLocation(latitude: location.latitude, longitude: location.longitude)
     }
+}
+
+public class ARNode: SCNNode {
+    
+    var model: ARManager.Model = .present
 }
 
 // MARK: - ARKit Extensions
