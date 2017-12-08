@@ -15,4 +15,4 @@ service cloud.firestore {
 
 ## ライセンス
 
-[MIT](LICENCE)
+[MIT](LICENSE)
