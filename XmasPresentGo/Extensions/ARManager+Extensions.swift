@@ -57,7 +57,7 @@ extension ARManager: SCNModelGeneratable {
         }
     }
     
-    func generateModel(_ model: Model) -> ARNode {
+    func generateModel(_ model: Model) -> SCNNode {
         
         guard let scene = SCNScene(named: model.fileName) else {
             
@@ -69,26 +69,23 @@ extension ARManager: SCNModelGeneratable {
             assert(false, "指定されたモデルが見つかりません。")
         }
         
-        let arNode = node as! ARNode
-        
         switch model {
             
         case .teddyBear:
-            arNode.scale = SCNVector3Make(0.002, 0.002, 0.002)
+            node.scale = SCNVector3Make(0.002, 0.002, 0.002)
         case .gundam:
             // Cannot change the scale
-            arNode.transform = SCNMatrix4MakeRotation(Float.pi, 0, 1, 0)
+            node.transform = SCNMatrix4MakeRotation(Float.pi, 0, 1, 0)
         case .nintendoDS:
-            arNode.scale = SCNVector3Make(0.002, 0.002, 0.002)
+            node.scale = SCNVector3Make(0.002, 0.002, 0.002)
         case .present:
-            arNode.scale = SCNVector3Make(0.1, 0.1, 0.1)
+            node.scale = SCNVector3Make(0.1, 0.1, 0.1)
         case .ship:
             break
         case .skateboard:
-            arNode.scale = SCNVector3Make(0.002, 0.002, 0.002)
+            node.scale = SCNVector3Make(0.002, 0.002, 0.002)
         }
-        arNode.model = model
         
-        return arNode
+        return node
     }
 }

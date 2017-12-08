@@ -12,7 +12,7 @@ struct ObjectData {
     
     var latitude: Double
     var longitude: Double
-    var object: ARManager.Model
+    var object: Int
     var userID: String
     
     var dictionary: [String: Any] {
@@ -20,7 +20,7 @@ struct ObjectData {
         return [
             "latitude": latitude,
             "longitude": longitude,
-            "objectID": object.rawValue,
+            "objectID": object,
             "userID": userID
         ]
     }
@@ -32,9 +32,21 @@ extension ObjectData: DocumentSerializable {
         
         guard let latitude = dictionary["latitude"] as? Double,
             let longitude = dictionary["longitude"] as? Double,
-            let objectRaw = dictionary["object"] as? Int,
-            let userId = dictionary["userId"] as? String else { return nil }
+            let objectRaw = dictionary["objectID"] as? Int,
+            let userId = dictionary["userID"] as? String else {
+
+                return nil
+        }
         
-        self.init(latitude: latitude, longitude: longitude, object: ARManager.Model(rawValue: objectRaw)!, userID: userId)
+        self.init(latitude: latitude, longitude: longitude, object: objectRaw, userID: userId)
+    }
+}
+
+extension ObjectData: Equatable {
+    
+    static func ==(lhs: ObjectData, rhs: ObjectData) -> Bool {
+        
+        return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude &&
+            lhs.object == rhs.object && lhs.userID == rhs.userID
     }
 }

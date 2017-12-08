@@ -32,6 +32,7 @@ class MainViewController: UIViewController {
     
     var selectID = 0
     let modelIDs: [ARManager.Model] = [.present, .teddyBear, .gundam, .nintendoDS, .ship, .skateboard]
+    var addedObjects: [ObjectData] = []
     
     override func viewDidLoad() {
         
@@ -58,10 +59,19 @@ class MainViewController: UIViewController {
         
         // z: North and South, x: East and West, y: parallel to gravity
         configuration.worldAlignment = .gravityAndHeading
+        configuration.planeDetection = .horizontal
         
         // Run the view's session
         sceneView.session.run(configuration)
         ARCLManager.shared.run()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        super.viewDidAppear(animated)
+        
+        FirestoreHelper.shared.query = FirestoreHelper.shared.fetchQuery(for: "models")
+        FirestoreHelper.shared.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,12 +80,6 @@ class MainViewController: UIViewController {
         
         // Pause the view's session
         sceneView.session.pause()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -93,10 +97,26 @@ class MainViewController: UIViewController {
                 let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
                 let newNode = ARManager.shared.generateModel(modelIDs[selectID])
                 newNode.position = hitPosition
+                
+                newNode.objectData = FirestoreHelper.shared.postData(location: MatrixHelper.transformLocation(for: matrix_identity_float4x4, originLocation: ARCLManager.shared.location, location: hitPosition), objectID: modelIDs[selectID])!
+                self.addedObjects.append(newNode.objectData)
+                
                 sceneView.scene.rootNode.addChildNode(newNode)
             } else {
                 
+                guard let hitObject = sceneView.hitTest(touchLocation, options: nil).first else {
+                    
+                    print("no hit")
+                    return
+                }
                 
+                if hitObject.node.name == ARManager.Model.present.modelName {
+                    
+                    let objectData = hitObject.node.objectData
+                    let newNode = ARManager.shared.generateModel(ARManager.Model(rawValue: objectData.object)!)
+                    newNode.objectData = objectData
+                    sceneView.scene.rootNode.replaceChildNode(hitObject.node, with: newNode)
+                }
             }
         }
     }
@@ -106,18 +126,10 @@ class MainViewController: UIViewController {
 
 extension MainViewController: ARSCNViewDelegate {
     
-    /*
-     // Override to create and configure nodes for anchors added to the view's session.
-     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-     let node = SCNNode()
-     
-     return node
-     }
-     */
-    
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
         
+        print(error.localizedDescription)
     }
     
     func sessionWasInterrupted(_ session: ARSession) {
@@ -187,6 +199,35 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
         return UIEdgeInsets.zero
+    }
+}
+
+// MARK: - Firestore Delegate
+
+extension MainViewController: FirestoreHelperDelegate {
+    
+    func updateObjects(_ objects: [ObjectData]) {
+        
+        for object in FirestoreHelper.shared.objects {
+            
+            guard !self.addedObjects.contains(object) else {
+                
+                continue
+            }
+            let location = CLLocation(latitude: object.latitude, longitude: object.longitude)
+            let isMe = FirestoreHelper.shared.userId == object.userID
+            let (dist, _, _) = VincentyHelper.shared.calcurateDistanceAndAzimuths(at: ARCLManager.shared.coordinate, and: location.coordinate)
+            if abs(dist) < 100 {
+                
+                let newNode = ARManager.shared.generateModel(isMe ? ARManager.Model(rawValue: object.object)! : .present)
+                newNode.objectData = object
+                let newPosition = SCNMatrix4(MatrixHelper.transformMatrix(for: matrix_identity_float4x4, originLocation: ARCLManager.shared.location, location: location))
+                newNode.position = SCNVector3Make(newPosition.m41, newPosition.m42, newPosition.m43)
+                print(newNode)
+                sceneView.scene.rootNode.addChildNode(newNode)
+                addedObjects.append(object)
+            }
+        }
     }
 }
 

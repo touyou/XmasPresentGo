@@ -10,6 +10,11 @@ import Foundation
 import Firebase
 import CoreLocation
 
+protocol FirestoreHelperDelegate: class {
+    
+    func updateObjects(_ objects: [ObjectData])
+}
+
 class FirestoreHelper {
 
     static let shared = FirestoreHelper()
@@ -22,7 +27,6 @@ class FirestoreHelper {
 
     private init() {
 
-        FirebaseApp.configure()
         defaultStore = Firestore.firestore()
     }
     deinit {
@@ -40,11 +44,19 @@ class FirestoreHelper {
 
                 listener.remove()
                 observeQuery()
+            } else {
+                
+                observeQuery()
             }
         }
     }
 
+    weak var delegate: FirestoreHelperDelegate?
     var objects: [ObjectData] = []
+    var userId: String {
+        
+        return UIDevice.current.identifierForVendor?.uuidString ?? "unknown"
+    }
 
     /// Start query observing
     internal func observeQuery() {
@@ -56,8 +68,11 @@ class FirestoreHelper {
                 print("Error fetching snapshot results: \(error!)")
                 return
             }
+            
             let models = snapshot.documents.map { (document) -> ObjectData in
+
                 if let model = ObjectData(dictionary: document.data()) {
+                    
                     return model
                 } else {
                     // Don't use fatalError here in a real app.
@@ -66,6 +81,7 @@ class FirestoreHelper {
             }
 
             self.objects = models
+            self.delegate?.updateObjects(self.objects)
         }
     }
 
@@ -87,15 +103,12 @@ class FirestoreHelper {
     }
 
     /// Post Data
-    internal func postData(location: CLLocation, objectID: ARManager.Model) {
+    internal func postData(location: CLLocation, objectID: ARManager.Model) -> ObjectData? {
 
-        let userID = ""
-
-        // TODO: userのIDをUUIDでを決める
         let batch = self.defaultStore.batch()
-        let model = ObjectData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, object: objectID, userID: userID)
-        let userRef = self.defaultStore.collection("users").document(userID).collection("model").document()
-        batch.setData(model.dictionary, forDocument: userRef)
+        let model = ObjectData(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, object: objectID.rawValue, userID: userId)
+        let modelRef = self.defaultStore.collection("models").document()
+        batch.setData(model.dictionary, forDocument: modelRef)
 
         batch.commit { error in
 
@@ -105,6 +118,8 @@ class FirestoreHelper {
             }
             print("commit error: \(error.localizedDescription)")
         }
+        
+        return model
     }
 }
 

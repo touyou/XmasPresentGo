@@ -19,7 +19,7 @@ import GLKit.GLKMatrix4
 protocol SCNModelGeneratable {
     
     associatedtype ModelEnumType
-    func generateModel(_ model: ModelEnumType) -> ARNode
+    func generateModel(_ model: ModelEnumType) -> SCNNode
 }
 
 /// ARKit Manager
@@ -253,7 +253,8 @@ class MatrixHelper {
         let position = vector_float4(0.0, 0.0, Float(-distance), 0.0)
         let translationMatrix = MatrixHelper.translationMatrix(with: matrix_identity_float4x4, for: position)
         let rotationMatrix = MatrixHelper.rotateAroundY(with: matrix_identity_float4x4, for: Float(bearing.radian))
-        let rotationMatrix2 = MatrixHelper.rotateAroundX(with: matrix_identity_float4x4, for: Float(a2.radian))
+//        let rotationMatrix2 = MatrixHelper.rotateAroundX(with: matrix_identity_float4x4, for: Float(a2.radian))
+        let rotationMatrix2 = matrix_identity_float4x4
         let transformMatrix = simd_mul(simd_mul(rotationMatrix, translationMatrix), rotationMatrix2)
         return simd_mul(matrix, transformMatrix)
     }
@@ -274,15 +275,43 @@ class MatrixHelper {
     }
 }
 
-public class ARNode: SCNNode {
-    
-    var model: ARManager.Model = .present
-}
-
 // MARK: - ARKit Extensions
 
 extension SCNScene {}
 
-extension SCNNode {}
+protocol PropertyStoring {
+    
+    associatedtype T
+    
+    func getAssociatedObject(_ key: UnsafeRawPointer!, defaultValue: T) -> T
+}
+
+extension PropertyStoring {
+    func getAssociatedObject(_ key: UnsafeRawPointer!, defaultValue: T) -> T {
+        guard let value = objc_getAssociatedObject(self, key) as? T else {
+            return defaultValue
+        }
+        return value
+    }
+}
+
+extension SCNNode: PropertyStoring {
+    
+    typealias T = ObjectData
+    
+    private struct CustomProperties {
+        static var objectData = ObjectData.init(latitude: 0, longitude: 0, object: ARManager.Model.present.rawValue, userID: "unknown")
+    }
+    
+    var objectData: ObjectData {
+        
+        get {
+            return getAssociatedObject(&CustomProperties.objectData, defaultValue: CustomProperties.objectData)
+        }
+        set {
+            return objc_setAssociatedObject(self, &CustomProperties.objectData, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+}
 
 extension ARSCNView {}
