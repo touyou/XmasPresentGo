@@ -13,6 +13,17 @@ service cloud.firestore {
 }
 ```
 
+## 使用モデル
+
+- present.scn by Jarlan Perez
+- teddy_bear.scn by Ronen Horovitz
+- gundam.scn by Tipatat Chennavasin
+- skateboard.scn by Poly by Google
+- unicycle.scn by Poly by Google
+- game.scn by Poly by Google
+
+すべてCCライセンスとなっています
+
 ## ライセンス
 
 [MIT](LICENSE)
