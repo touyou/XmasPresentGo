@@ -34,6 +34,7 @@ extension NibInstantiable {
         guard let view = nib.instantiate(withOwner: owner, options: nil).first as? Self else {
         
             assert(false, "生成したいViewと同じ名前のxibファイルが見つかりません。")
+            fatalError()
         }
         
         return view

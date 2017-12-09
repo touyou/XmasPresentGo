@@ -62,11 +62,13 @@ extension ARManager: SCNModelGeneratable {
         guard let scene = SCNScene(named: model.fileName) else {
             
             assert(false, "モデルのファイル名が間違っています。")
+            fatalError()
         }
         
         guard let node = scene.rootNode.childNode(withName: model.modelName, recursively: true) else {
             
             assert(false, "指定されたモデルが見つかりません。")
+            fatalError()
         }
         
         switch model {
