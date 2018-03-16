@@ -15,6 +15,7 @@
 		4601745E1FBFC98600AEE0C0 /* gundam.scn in Resources */ = {isa = PBXBuildFile; fileRef = 460174541FBFC8A200AEE0C0 /* gundam.scn */; };
 		460174611FBFD19A00AEE0C0 /* ARManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460174601FBFD19A00AEE0C0 /* ARManager+Extensions.swift */; };
 		460174651FC0676E00AEE0C0 /* CLLocationCoordinate2D+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460174641FC0676E00AEE0C0 /* CLLocationCoordinate2D+Extensions.swift */; };
+		46071C99205BFF04002AB83F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46071C98205BFF04002AB83F /* GoogleService-Info.plist */; };
 		4644C0E21FD2436100E3C5EF /* FirestoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4644C0E11FD2436100E3C5EF /* FirestoreHelper.swift */; };
 		4687D4D71FBC3651000192BB /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4687D4D61FBC3651000192BB /* StoryboardInstantiable.swift */; };
 		4687D4D91FBC394D000192BB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4687D4D81FBC394D000192BB /* Default-568h@2x.png */; };
@@ -56,6 +57,7 @@
 		4601745C1FBFC90600AEE0C0 /* teddy_bear.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = teddy_bear.scn; sourceTree = "<group>"; };
 		460174601FBFD19A00AEE0C0 /* ARManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARManager+Extensions.swift"; sourceTree = "<group>"; };
 		460174641FC0676E00AEE0C0 /* CLLocationCoordinate2D+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extensions.swift"; sourceTree = "<group>"; };
+		46071C98205BFF04002AB83F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4644C0E11FD2436100E3C5EF /* FirestoreHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreHelper.swift; sourceTree = "<group>"; };
 		4662D04DF201AA049EA9E408 /* Pods_XmasPresentGo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XmasPresentGo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4687D4D61FBC3651000192BB /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 			children = (
 				468E23411FBBDA6D00675696 /* AppDelegate.swift */,
 				468E234F1FBBDA6D00675696 /* Info.plist */,
+				46071C98205BFF04002AB83F /* GoogleService-Info.plist */,
 				468E23551FBBDD2C00675696 /* GoogleService-Info.plist */,
 			);
 			path = Settings;
@@ -315,6 +318,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46071C99205BFF04002AB83F /* GoogleService-Info.plist in Resources */,
 				4601745D1FBFC98600AEE0C0 /* teddy_bear.scn in Resources */,
 				4601745E1FBFC98600AEE0C0 /* gundam.scn in Resources */,
 				468E23441FBBDA6D00675696 /* art.scnassets in Resources */,
